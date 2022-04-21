@@ -21,7 +21,7 @@
                   "items": [
                       {
                           "type": "TextBlock",
-                          "text": "Issues",
+                          "text": "Stale Issues",
                           "isSubtle": true,
                           "weight": "Bolder",
                           "wrap": true
@@ -29,7 +29,7 @@
                       {
                           "$data": "${issues}",
                           "type": "TextBlock",
-                          "text": "#${number} [${title}](${url})",
+                          "text": "[#${number} ${title}](${url})",
                           "spacing": "Small",
                           "wrap": true
                       }

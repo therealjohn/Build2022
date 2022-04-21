@@ -66,7 +66,22 @@ async function getIssues() {
 
   try {
     const body = {
-      query: `query { repository(owner: "${process.env.REACT_APP_GITHUB_OWNER}", name: "${process.env.REACT_APP_GITHUB_REPO}") { issues(first: 100) { edges { node { id createdAt updatedAt } } } } }`,
+      query: `query($owner:String!, $name:String!) { 
+        repository(owner: $owner, name: $name) { 
+          issues(first: 100, filterBy: { assignee: $owner }) { 
+            edges { 
+              node { 
+                id 
+                updatedAt                
+              } 
+            } 
+          } 
+        } 
+      }`,
+      variables: {
+        owner: process.env.REACT_APP_GITHUB_OWNER,
+        name: process.env.REACT_APP_GITHUB_REPO,
+      },
     };
 
     const response = await fetch("https://api.github.com/graphql", {
@@ -78,7 +93,7 @@ async function getIssues() {
     });
 
     const result = await response.json();
-    issues = result.data.repository.issues.edges.map((edge: { node: any }) => {
+    issues = result.data.repository.issues.edges.map((edge: any) => {
       return edge.node;
     });
   } catch (error) {
